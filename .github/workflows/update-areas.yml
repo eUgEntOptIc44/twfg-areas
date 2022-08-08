@@ -1,0 +1,71 @@
+name: update areas
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ ]
+  schedule:
+    - cron: "5 7 * * */3" # every third day at 7:05am UTC
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+  repository_dispatch: # run workflow on api request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: clone remote repo
+        run: git clone -b eugenoptic44-file-downloader https://codeberg.org/eUgEntOptIc44/Area-Generator/ AreaGenerator
+          
+      - name: clone this repo
+        run: git clone https://github.com/${{ github.repository }}.git twfg-areas
+      
+      - name: update packages
+        run: sudo apt-get update && sudo apt-get upgrade -y
+      
+      - name: setup openjdk-17-jdk
+        run: sudo apt-get install openjdk-17-jdk -y
+      
+      - name: list directory contents
+        run: ls -lisha
+      
+      - name: run Main.java
+        run: |
+          cd AreaGenerator
+          java -cp "gson-2.9.1.jar" Main.java
+
+      - name: copy areas.txt to github repo directory
+        run: cp AreaGenerator/areas.txt twfg-areas/areas.txt
+      
+      - name: list directory contents
+        run: ls -lisha
+      
+      - name: return directory size
+        run: du -sh
+
+      - name: Archive analysis report and tracker signatures
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: areas
+          path: |
+            */areas.txt
+      
+      - name: git push to origin
+        run: |
+          cd twfg-areas
+          git config --local user.name eUgEntOptIc44
+          git config --local user.email eUgEntOptIc@outlook.de
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git fetch --all
+          git checkout main
+          git reset
+          git add areas.txt
+          git status
+          git commit -m "update areas.txt" || true
+          git push -f origin main || true
