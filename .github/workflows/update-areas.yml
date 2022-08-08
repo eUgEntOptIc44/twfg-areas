@@ -29,8 +29,8 @@ jobs:
       - name: update packages
         run: sudo apt-get update && sudo apt-get upgrade -y
       
-      - name: setup openjdk-17-jdk
-        run: sudo apt-get install openjdk-17-jdk -y
+      - name: setup openjdk-11-jdk
+        run: sudo apt-get install openjdk-11-jdk -y
       
       - name: list directory contents
         run: ls -lisha
