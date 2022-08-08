@@ -64,7 +64,8 @@ jobs:
         id: downloadcompare
         run: |
           cd twfg-areas
-          wget https://codeberg.org/Starfish/TinyWeatherForecastGermany/raw/branch/master/app/src/main/res/raw/areas.txt
+          wget https://codeberg.org/Starfish/TinyWeatherForecastGermany/raw/branch/master/app/src/main/res/raw/areas.txt || true
+          ls -lisha
           OUTPUT=$(diff -q areas.txt areas.txt.1)
           echo "::set-output name=OUTPUT::$OUTPUT" # send output to next actions step
 
