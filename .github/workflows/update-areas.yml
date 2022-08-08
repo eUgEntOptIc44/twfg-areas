@@ -18,6 +18,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: clone remote repo
@@ -32,6 +33,9 @@ jobs:
       - name: setup openjdk-11-jdk
         run: sudo apt-get install openjdk-11-jdk -y
       
+      - name: setup wget
+        run: sudo apt-get install wget -y
+
       - name: list directory contents
         run: ls -lisha
       
@@ -49,14 +53,23 @@ jobs:
       - name: return directory size
         run: du -sh
 
-      - name: Archive analysis report and tracker signatures
+      - name: upload artifact areas.txt
         uses: actions/upload-artifact@v3.1.0
         with:
           name: areas
           path: |
             */areas.txt
       
+      - name: download existing areas.txt and compare with generated one
+        id: downloadcompare
+        run: |
+          cd twfg-areas
+          wget https://codeberg.org/Starfish/TinyWeatherForecastGermany/raw/branch/master/app/src/main/res/raw/areas.txt
+          OUTPUT=$(diff -q areas.txt areas.txt.1)
+          echo "::set-output name=OUTPUT::$OUTPUT" # send output to next actions step
+
       - name: git push to origin
+        if: steps.downloadcompare.outputs.OUTPUT != 0
         run: |
           cd twfg-areas
           git config --local user.name eUgEntOptIc44
