@@ -56,9 +56,9 @@ jobs:
       - name: upload artifact areas.txt
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: areas
+          name: areas.txt
           path: |
-            */areas.txt
+            twfg-areas/areas.txt
       
       - name: download existing areas.txt and compare with generated one
         id: downloadcompare

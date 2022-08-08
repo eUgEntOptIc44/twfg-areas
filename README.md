@@ -1,3 +1,3 @@
 # TWFG-Areas
 
-create `stations.txt` file for `Tiny Weather Forecast Germany`
+create [`areas.txt`](https://eugentoptic44.github.io/twfg-areas/areas.txt) file for [`Tiny Weather Forecast Germany`](https://codeberg.org/Starfish/TinyWeatherForecastGermany)
