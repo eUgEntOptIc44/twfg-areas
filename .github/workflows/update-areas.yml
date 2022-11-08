@@ -68,10 +68,10 @@ jobs:
           ls -lisha || true
           diff -q areas.txt areas.txt.1 || true
           OUTPUT=$(diff -q areas.txt areas.txt.1) || true
-          echo "::set-output name=OUTPUT::$OUTPUT" || true # send output to next actions step
+          echo "diffstatus::$OUTPUT" >> $GITHUB_OUTPUT || true # send output to next actions step -> also see: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
 
       - name: git push to origin
-        if: steps.downloadcompare.outputs.OUTPUT != 0
+        if: steps.downloadcompare.outputs.diffstatus != 0
         run: |
           cd twfg-areas
           git config --local user.name eUgEntOptIc44
