@@ -8,7 +8,7 @@ The file contains the ['Warngebiete'](https://www.dwd.de/DE/wetter/warnungen/war
 
 **format:**
 
-```
+```bash
 Geodata version: VERSION_NUMBER, DD.MM.YYYY
 WARNCELL_ID@WARNCENTER@type@"NAME"@COORDINATES
 ...
