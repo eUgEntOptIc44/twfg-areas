@@ -53,6 +53,9 @@ jobs:
       - name: return directory size
         run: du -sh
 
+      - name: write lastmod.txt file
+        run: echo $(date +%Y-%m-%d_%H:%M) > twfg-areas/lastmod.txt
+
       - name: upload artifact areas.txt
         uses: actions/upload-artifact@v3.1.1
         with:
@@ -74,12 +77,13 @@ jobs:
         if: steps.downloadcompare.outputs.diffstatus != 0
         run: |
           cd twfg-areas
-          git config --local user.name eUgEntOptIc44
-          git config --local user.email eUgEntOptIc@outlook.de
+          git config --local user.name twfgcicdbot
+          git config --local user.email twfgcicdbot@outlook.com
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git fetch --all
           git checkout main
           git reset
+          git add lastmod.txt
           git add areas.txt
           git status
           git commit -m "update areas.txt" || true
