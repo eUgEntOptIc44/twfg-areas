@@ -28,13 +28,16 @@ jobs:
         run: git clone https://github.com/${{ github.repository }}.git twfg-areas
       
       - name: update packages
-        run: sudo apt-get update && sudo apt-get upgrade -y
+        run: timeout 120s sudo apt update
+      
+      # - name: upgrade packages
+      #   run: timeout 120s sudo apt upgrade
       
       - name: setup openjdk-11-jdk
-        run: sudo apt-get install openjdk-11-jdk -y
+        run: sudo apt install openjdk-11-jdk -y
       
       - name: setup wget
-        run: sudo apt-get install wget -y
+        run: sudo apt install wget -y
 
       - name: list directory contents
         run: ls -lisha
