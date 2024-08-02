@@ -60,7 +60,7 @@ jobs:
         run: echo $(date +%Y-%m-%d_%H:%M) > twfg-areas/lastmod.txt
 
       - name: upload artifact areas.txt
-        uses: actions/upload-artifact@v4.3.4
+        uses: actions/upload-artifact@v4.3.5
         with:
           name: areas.txt
           path: |
